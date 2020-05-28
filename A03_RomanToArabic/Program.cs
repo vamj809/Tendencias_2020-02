@@ -24,34 +24,29 @@ namespace A03_RomanToArabic
 
         static int getRomanValue(string romanNumber)
         {
+            romanNumber = romanNumber.ToUpper();
             int romanLength = romanNumber.Length;
             int result = 0;
 
-            //Por cada letra del numero romano
             for (int i = 0; i < romanLength; i++) {
-                //Lee valor de la letra actual.
                 romanChars.TryGetValue(romanNumber[i], out int curr_val);
-                //Verifica que es valido
                 if (curr_val == 0)
                     return -1;
-                //si (tiene una letra a la derecha)
+
                 if (i < romanLength - 1) {
-                    //Lee el siguiente valor.
+
                     romanChars.TryGetValue(romanNumber[i + 1], out int next_val);
-                    //Verifica que es valido
                     if (next_val == 0)
                         return -1;
-                    //Si el siguiente valor es mayor al actual, sus valores van juntos.
+
                     if (next_val > curr_val) {
                         result += next_val - curr_val;
                         i++;
                     }
-                    //De otro modo, se suma normalmente
                     else {
                         result += curr_val;
                     }
                 }
-                //Si es el ultimo valor, solo suma su valor.
                 else { 
                     result += curr_val;
                 }
@@ -59,8 +54,8 @@ namespace A03_RomanToArabic
             return result;
         }
 
-        static string RomanToArab(string romanNumber = null)
-        {
+        static string RomanToArab(string romanNumber = null) {
+
             if (string.IsNullOrEmpty(romanNumber)) {
                 Console.Write("Escriba el numero en romano: ");
                 romanNumber = Console.ReadLine().Trim();
@@ -70,7 +65,7 @@ namespace A03_RomanToArabic
 
             int arabic = getRomanValue(romanNumber);
 
-            if (arabic < 1) {
+            if (arabic < 0) {
                 return "Numero no es valido.";
             }
             else {
@@ -82,8 +77,23 @@ namespace A03_RomanToArabic
         {
             Console.WriteLine(RomanToArab("MMXVIII"));
             Console.WriteLine(RomanToArab("MMXX"));
+            Console.WriteLine(RomanToArab("MMXX"));
+
             while (true) {
-                Console.WriteLine(RomanToArab());
+                Console.WriteLine("------------------ Type [END] to finish program ------------------");
+                Console.Write("Escriba el numero en romano: ");
+                string romanNumber = Console.ReadLine().Trim();
+
+                if (romanNumber.ToUpper() == "END")
+                    break;
+
+                int arabic = getRomanValue(romanNumber);
+                if (arabic < 0) {
+                    Console.WriteLine("Numero no es valido.");
+                }
+                else {
+                    Console.WriteLine("Valor Arabico: " + arabic);
+                }
             }
         }
     }
